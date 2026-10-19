@@ -1,0 +1,17 @@
+name: Apple build and core tests
+on:
+  push:
+  pull_request:
+jobs:
+  verify:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain
+        run: xcodebuild -version
+      - name: Unit tests (Swift Package)
+        run: swift test
+      - name: iOS simulator compile
+        run: xcodebuild -project AnimeKodoku.xcodeproj -scheme AnimeKodoku -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build/iOS CODE_SIGNING_ALLOWED=NO build
+      - name: macOS compile
+        run: xcodebuild -project AnimeKodoku.xcodeproj -scheme AnimeKodoku-macOS -destination 'generic/platform=macOS' -derivedDataPath build/macOS CODE_SIGNING_ALLOWED=NO build
