@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "kind": "rest",
+  "source": {
+    "id": "my-server",
+    "name": "My Media Server",
+    "baseUrl": "https://your-server.example/api",
+    "language": "it",
+    "isEnabled": true,
+    "supportsSearch": true
+  },
+  "filters": [
+    {
+      "id": "genre",
+      "title": "Genere",
+      "options": [
+        "Avventura",
+        "Fantascienza"
+      ]
+    },
+    {
+      "id": "sort",
+      "title": "Ordine",
+      "options": [
+        "latest",
+        "title_asc",
+        "title_desc"
+      ]
+    }
+  ]
+}

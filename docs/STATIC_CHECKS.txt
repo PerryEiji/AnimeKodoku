@@ -1,0 +1,10 @@
+Swift syntax parsed: 31 files (tree-sitter, NOT type checking)
+Info plists, entitlements and privacy manifest parsed
+Schemes, workspace XML and JSON files parsed
+PBX IDs/references, both targets, source file paths and icon assets checked (115 objects)
+REST manifest v1 fixture validated
+XCTest cases included: 13 (NOT executed here)
+PASS: static checks only. Apple compilation/runtime tests not performed.
+PBX project parsed independently with python-pbxproj: 2 native targets, 3 build phases each.
+Shell syntax: bash -n scripts/build.sh passed.
+Environment: Linux; no Swift compiler, Xcode or Apple SDK available.
