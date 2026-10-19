@@ -46,7 +46,7 @@ jobs:
           test -d "$app"
           test -f "$app/AnimeKodoku"
           /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$app/Info.plist"
-          /usr/bin/lipo -verify_arch arm64 "$app/AnimeKodoku"
+          /usr/bin/lipo "$app/AnimeKodoku" -verify_arch arm64
           mkdir -p build/IPA-package/Payload
           /usr/bin/ditto "$app" build/IPA-package/Payload/AnimeKodoku.app
           cd build/IPA-package
