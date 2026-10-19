@@ -1,0 +1,63 @@
+name: Genera IPA
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-ipa:
+    name: Test e IPA iOS senza firma
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Toolchain
+        run: |
+          xcodebuild -version
+          swift --version
+
+      - name: Test Swift
+        run: swift test
+
+      - name: Compila iOS Release
+        run: |
+          xcodebuild \
+            -project AnimeKodoku.xcodeproj \
+            -scheme AnimeKodoku \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build/IPA \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build
+
+      - name: Crea AnimeKodoku-unsigned.ipa
+        run: |
+          set -euo pipefail
+          app="build/IPA/Build/Products/Release-iphoneos/AnimeKodoku.app"
+          test -d "$app"
+          test -f "$app/AnimeKodoku"
+          /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$app/Info.plist"
+          /usr/bin/lipo -verify_arch arm64 "$app/AnimeKodoku"
+          mkdir -p build/IPA-package/Payload
+          /usr/bin/ditto "$app" build/IPA-package/Payload/AnimeKodoku.app
+          cd build/IPA-package
+          /usr/bin/ditto -c -k --keepParent Payload ../AnimeKodoku-unsigned.ipa
+          /usr/bin/unzip -t ../AnimeKodoku-unsigned.ipa
+
+      - name: Pubblica AnimeKodoku-IPA
+        uses: actions/upload-artifact@v7
+        with:
+          name: AnimeKodoku-IPA
+          path: build/AnimeKodoku-unsigned.ipa
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
