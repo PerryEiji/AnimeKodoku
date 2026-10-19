@@ -1,0 +1,7 @@
+// Copy to Config.local.xcconfig and attach it to both target configurations
+// in Xcode, OR set these keys in Build Settings > User-Defined directly.
+// Xcode .xcconfig treats // as a comment; use the slash trick below.
+SLASH = /
+DEMO_VIDEO_URL = https:$(SLASH)/your-media.example/video.mp4
+DEMO_SUBTITLE_URL = https:$(SLASH)/your-media.example/subtitles.srt
+// No API keys, tokens or passwords belong here.
